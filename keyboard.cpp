@@ -1,9 +1,30 @@
 #include "keyboard.h"
 
-KeyboardDriver::KeyboardDriver(InterruptManager *manager)
+KeyboardEventHandler::KeyboardEventHandler()
+{
+}
+void KeyboardEventHandler::OnkeyDown(char)
+{
+}
+void KeyboardEventHandler::OnkeyUp(char)
+{
+}
+
+KeyboardDriver::KeyboardDriver(InterruptManager *manager,KeyboardEventHandler *handler)
     : InterruptHandler(0x21, manager),
       dataport(0x60),
       commandport(0x64)
+{
+    this->handler = handler;
+}
+
+KeyboardDriver::~KeyboardDriver()
+{
+}
+
+void printf(char *);
+void printfHex(uint8_t);
+void KeyboardDriver::Activate()
 {
     while (commandport.Read() & 0x1)
     {
@@ -18,262 +39,259 @@ KeyboardDriver::KeyboardDriver(InterruptManager *manager)
     dataport.Write(0xF4);
 }
 
-KeyboardDriver::~KeyboardDriver()
-{
-}
-
-void printf(char *);
-
 uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
 {
     uint8_t key = dataport.Read();
     static bool Shift = false;
-
+    if(handler == 0)
+    {
+        return esp;
+    }
     switch (key)
     {
     case 0x02:
         if (Shift)
-            printf("!");
+            handler->OnkeyDown('!');
         else
-            printf("1");
+            handler->OnkeyDown('1');
         break;
     case 0x03:
         if (Shift)
-            printf("@");
+            handler->OnkeyDown('@');
         else
-            printf("2");
+            handler->OnkeyDown('2');
         break;
     case 0x04:
         if (Shift)
-            printf("#");
+            handler->OnkeyDown('#');
         else
-            printf("3");
+            handler->OnkeyDown('3');
         break;
     case 0x05:
         if (Shift)
-            printf("$");
+            handler->OnkeyDown('$');
         else
-            printf("4");
+            handler->OnkeyDown('4');
         break;
     case 0x06:
         if (Shift)
-            printf("%");
+            handler->OnkeyDown('%');
         else
-            printf("5");
+            handler->OnkeyDown('5');
         break;
     case 0x07:
         if (Shift)
-            printf("^");
+            handler->OnkeyDown('^');
         else
-            printf("6");
+            handler->OnkeyDown('6');
         break;
     case 0x08:
         if (Shift)
-            printf("&");
+            handler->OnkeyDown('&');
         else
-            printf("7");
+            handler->OnkeyDown('7');
         break;
     case 0x09:
         if (Shift)
-            printf("*");
+            handler->OnkeyDown('*');
         else
-            printf("8");
+            handler->OnkeyDown('8');
         break;
     case 0x0A:
         if (Shift)
-            printf("(");
+            handler->OnkeyDown('(');
         else
-            printf("9");
+            handler->OnkeyDown('9');
         break;
     case 0x0B:
         if (Shift)
-            printf(")");
+            handler->OnkeyDown(')');
         else
-            printf("0");
+            handler->OnkeyDown('0');
         break;
 
     case 0x10:
         if (Shift)
-            printf("Q");
+            handler->OnkeyDown('Q');
         else
-            printf("q");
+            handler->OnkeyDown('q');
         break;
     case 0x11:
         if (Shift)
-            printf("W");
+            handler->OnkeyDown('W');
         else
-            printf("w");
+            handler->OnkeyDown('w');
         break;
     case 0x12:
         if (Shift)
-            printf("E");
+            handler->OnkeyDown('E');
         else
-            printf("e");
+            handler->OnkeyDown('e');
         break;
     case 0x13:
         if (Shift)
-            printf("R");
+            handler->OnkeyDown('R');
         else
-            printf("r");
+            handler->OnkeyDown('r');
         break;
     case 0x14:
         if (Shift)
-            printf("T");
+            handler->OnkeyDown('T');
         else
-            printf("t");
+            handler->OnkeyDown('t');
         break;
     case 0x15:
         if (Shift)
-            printf("Y");
+            handler->OnkeyDown('Y');
         else
-            printf("y");
+            handler->OnkeyDown('y');
         break;
     case 0x16:
         if (Shift)
-            printf("U");
+            handler->OnkeyDown('U');
         else
-            printf("u");
+            handler->OnkeyDown('u');
         break;
     case 0x17:
         if (Shift)
-            printf("I");
+            handler->OnkeyDown('I');
         else
-            printf("i");
+            handler->OnkeyDown('i');
         break;
     case 0x18:
         if (Shift)
-            printf("O");
+            handler->OnkeyDown('O');
         else
-            printf("o");
+            handler->OnkeyDown('o');
         break;
     case 0x19:
         if (Shift)
-            printf("P");
+            handler->OnkeyDown('P');
         else
-            printf("p");
+            handler->OnkeyDown('p');
         break;
 
     case 0x1E:
         if (Shift)
-            printf("A");
+            handler->OnkeyDown('A');
         else
-            printf("a");
+            handler->OnkeyDown('a');
         break;
     case 0x1F:
         if (Shift)
-            printf("S");
+            handler->OnkeyDown('S');
         else
-            printf("s");
+            handler->OnkeyDown('s');
         break;
     case 0x20:
         if (Shift)
-            printf("D");
+            handler->OnkeyDown('D');
         else
-            printf("d");
+            handler->OnkeyDown('d');
         break;
     case 0x21:
         if (Shift)
-            printf("F");
+            handler->OnkeyDown('F');
         else
-            printf("f");
+            handler->OnkeyDown('f');
         break;
     case 0x22:
         if (Shift)
-            printf("G");
+            handler->OnkeyDown('G');
         else
-            printf("g");
+            handler->OnkeyDown('g');
         break;
     case 0x23:
         if (Shift)
-            printf("H");
+            handler->OnkeyDown('H');
         else
-            printf("h");
+            handler->OnkeyDown('h');
         break;
     case 0x24:
         if (Shift)
-            printf("J");
+            handler->OnkeyDown('J');
         else
-            printf("j");
+            handler->OnkeyDown('j');
         break;
     case 0x25:
         if (Shift)
-            printf("K");
+            handler->OnkeyDown('K');
         else
-            printf("k");
+            handler->OnkeyDown('k');
         break;
     case 0x26:
         if (Shift)
-            printf("L");
+            handler->OnkeyDown('L');
         else
-            printf("l");
+            handler->OnkeyDown('l');
         break;
 
     case 0x2C:
         if (Shift)
-            printf("Z");
+            handler->OnkeyDown('Z');
         else
-            printf("z");
+            handler->OnkeyDown('z');
         break;
     case 0x2D:
         if (Shift)
-            printf("X");
+            handler->OnkeyDown('X');
         else
-            printf("x");
+            handler->OnkeyDown('x');
         break;
     case 0x2E:
         if (Shift)
-            printf("C");
+            handler->OnkeyDown('C');
         else
-            printf("c");
+            handler->OnkeyDown('c');
         break;
     case 0x2F:
         if (Shift)
-            printf("V");
+            handler->OnkeyDown('V');
         else
-            printf("v");
+            handler->OnkeyDown('v');
         break;
     case 0x30:
         if (Shift)
-            printf("B");
+            handler->OnkeyDown('B');
         else
-            printf("b");
+            handler->OnkeyDown('b');
         break;
     case 0x31:
         if (Shift)
-            printf("N");
+            handler->OnkeyDown('N');
         else
-            printf("n");
+            handler->OnkeyDown('n');
         break;
     case 0x32:
         if (Shift)
-            printf("M");
+            handler->OnkeyDown('M');
         else
-            printf("m");
+            handler->OnkeyDown('m');
         break;
     case 0x33:
         if (Shift)
-            printf("<");
+            handler->OnkeyDown('<');
         else
-            printf(",");
+            handler->OnkeyDown(',');
         break;
     case 0x34:
         if (Shift)
-            printf(">");
+            handler->OnkeyDown('>');
         else
-            printf(".");
+            handler->OnkeyDown('.');
         break;
     case 0x35:
         if (Shift)
-            printf("?");
+            handler->OnkeyDown('?');
         else
-            printf("/");
+            handler->OnkeyDown('/');
         break;
 
     case 0x1C:
-        printf("\n");
+        handler->OnkeyDown('\n');
         break;
     case 0x39:
-        printf(" ");
+        handler->OnkeyDown(' ');
         break;
     case 0x2A:
     case 0x36:
@@ -290,11 +308,8 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
     default:
         if (key < 0x80)
         {
-            char *foo = "KEYBOARD 0x00 ";
-            char *hex = "0123456789ABCDEF";
-            foo[11] = hex[(key >> 4) & 0xF];
-            foo[12] = hex[key & 0xF];
-            printf(foo);
+            printf("KEYBOARD 0x");
+            printfHex(key);
         }
         break;
     }
