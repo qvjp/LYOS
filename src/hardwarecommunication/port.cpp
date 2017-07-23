@@ -1,4 +1,6 @@
-#include "port.h"
+#include <hardwarecommunication/port.h>
+using namespace lyos::common;
+using namespace lyos::hardwarecommunication;
 
 
 Port::Port(uint16_t portnumber)

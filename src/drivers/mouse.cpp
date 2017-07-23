@@ -1,4 +1,8 @@
-#include "mouse.h"
+#include <drivers/mouse.h>
+
+using namespace lyos::common;
+using namespace lyos::drivers;
+using namespace lyos::hardwarecommunication;
 
 MouseEventHandler::MouseEventHandler()
 {

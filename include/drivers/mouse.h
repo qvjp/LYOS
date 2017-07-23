@@ -1,38 +1,42 @@
-#ifndef __MOUSE_H
-#define __MOUSE_H
+#ifndef __LYOS__DRIVERS__MOUSE_H
+#define __LYOS__DRIVERS__MOUSE_H
 
-#include "types.h"
-#include "port.h"
-#include "driver.h"
-#include "interrupts.h"
+#include <common/types.h>
+#include <hardwarecommunication/port.h>
+#include <drivers/driver.h>
+#include <hardwarecommunication/interrupts.h>
 
-class MouseEventHandler
+namespace lyos
 {
-  public:
-    MouseEventHandler();
+  namespace drivers
+  {
+    class MouseEventHandler
+    {
+    public:
+      MouseEventHandler();
 
-    virtual void OnActivate();
-    virtual void OnMouseDown(uint8_t button);
-    virtual void OnMouseUp(uint8_t button);
-    virtual void OnMouseMove(int x, int y);
-};
+      virtual void OnActivate();
+      virtual void OnMouseDown(lyos::common::uint8_t button);
+      virtual void OnMouseUp(lyos::common::uint8_t button);
+      virtual void OnMouseMove(int x, int y);
+    };
 
-class MouseDriver : public InterruptHandler, public Driver
-{
+    class MouseDriver : public lyos::hardwarecommunication::InterruptHandler, public Driver
+    {
+      lyos::hardwarecommunication::Port8Bit dataport;
+      lyos::hardwarecommunication::Port8Bit commandport;
+      lyos::common::uint8_t buffer[3];
+      lyos::common::uint8_t offset;
+      lyos::common::uint8_t buttons;
+      MouseEventHandler *handler;
 
-    Port8Bit dataport;
-    Port8Bit commandport;
-    uint8_t buffer[3];
-    uint8_t offset;
-    uint8_t buttons;
-    MouseEventHandler *handler;
-    
-
-  public:
-    MouseDriver(InterruptManager *manager, MouseEventHandler *handler);
-    ~MouseDriver();
-    virtual uint32_t HandleInterrupt(uint32_t esp);
-    virtual void Activate();
-};
+    public:
+      MouseDriver(lyos::hardwarecommunication::InterruptManager *manager, MouseEventHandler *handler);
+      ~MouseDriver();
+      virtual lyos::common::uint32_t HandleInterrupt(lyos::common::uint32_t esp);
+      virtual void Activate();
+    };
+  }
+}
 
 #endif

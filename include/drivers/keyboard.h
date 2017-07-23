@@ -1,32 +1,38 @@
-#ifndef __KEYBOARD_H
-#define __KEYBOARD_H
+#ifndef __LYOS__DRIVERS__KEYBOARD_H
+#define __LYOS__DRIVERS__KEYBOARD_H
 
-#include "types.h"
-#include "interrupts.h"
-#include "driver.h"
-#include "port.h"
+#include <common/types.h>
+#include <hardwarecommunication/interrupts.h>
+#include <drivers/driver.h>
+#include <hardwarecommunication/port.h>
 
+namespace lyos
+{
+namespace drivers
+{
 class KeyboardEventHandler
 {
-  public:
-    KeyboardEventHandler();
+public:
+  KeyboardEventHandler();
 
-    virtual void OnkeyDown(char);
-    virtual void OnkeyUp(char);
+  virtual void OnkeyDown(char);
+  virtual void OnkeyUp(char);
 };
 
-class KeyboardDriver : public InterruptHandler,
+class KeyboardDriver : public lyos::hardwarecommunication::InterruptHandler,
                        public Driver
 {
-    Port8Bit dataport;
-    Port8Bit commandport;
-    KeyboardEventHandler *handler;
+  lyos::hardwarecommunication::Port8Bit dataport;
+  lyos::hardwarecommunication::Port8Bit commandport;
+  KeyboardEventHandler *handler;
 
-  public:
-    KeyboardDriver(InterruptManager *manager, KeyboardEventHandler *handler);
-    ~KeyboardDriver();
-    virtual uint32_t HandleInterrupt(uint32_t esp);
-    virtual void Activate();
+public:
+  KeyboardDriver(lyos::hardwarecommunication::InterruptManager *manager, KeyboardEventHandler *handler);
+  ~KeyboardDriver();
+  virtual lyos::common::uint32_t HandleInterrupt(lyos::common::uint32_t esp);
+  virtual void Activate();
 };
+}
+}
 
 #endif

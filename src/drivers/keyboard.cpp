@@ -1,4 +1,8 @@
-#include "keyboard.h"
+#include <drivers/keyboard.h>
+
+using namespace lyos::common;
+using namespace lyos::drivers;
+using namespace lyos::hardwarecommunication;
 
 KeyboardEventHandler::KeyboardEventHandler()
 {

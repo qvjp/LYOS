@@ -1,4 +1,7 @@
-#include "gdt.h"
+#include <gdt.h>
+using namespace lyos;
+using namespace lyos::common;
+
 
 GlobalDescriptorTable::GlobalDescriptorTable()
     : nullSegmentSelector(0, 0, 0),

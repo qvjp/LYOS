@@ -1,4 +1,8 @@
-#include "driver.h"
+#include <drivers/driver.h>
+
+
+// using namespace lyos::common;
+using namespace lyos::drivers;
 
 Driver::Driver()
 {

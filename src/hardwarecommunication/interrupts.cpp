@@ -1,4 +1,6 @@
-#include "interrupts.h"
+#include <hardwarecommunication/interrupts.h>
+using namespace lyos::common;
+using namespace lyos::hardwarecommunication;
 
 void printf(char *str);
 void printfHex(uint8_t);
@@ -104,7 +106,7 @@ void InterruptManager::Deactivate()
     }
 }
 
-uint32_t InterruptManager::handleInterrupt(uint8_t interruptNumber, uint32_t esp)
+uint32_t InterruptManager::HandleInterrupt(uint8_t interruptNumber, uint32_t esp)
 {
     if (ActiveInterruptManager != 0)
     {
