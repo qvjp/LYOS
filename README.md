@@ -6,4 +6,5 @@
 - sudo apt install g++ binutils libc6-dev-i386 xorriso
 - make mykernel.iso
 - make run
+
 Before the first time use make run,create a new virtual machine whit virtualbox named LYOS use mykernel.iso
