@@ -41,7 +41,7 @@ mykernel.iso: mykernel.bin
 
 run: mykernel.iso
 	(killall VirtualBox && sleep 1) || true
-	VirtualBox --startvm "My Operating System" &
+	VirtualBox --startvm "LYOS" &
 
 install: mykernel.bin
 	sudo cp $< /boot/mykernel.bin
