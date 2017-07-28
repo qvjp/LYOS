@@ -2,6 +2,7 @@
 #include <common/types.h>
 #include <gdt.h>
 #include <hardwarecommunication/interrupts.h>
+#include <hardwarecommunication/pci.h>
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
@@ -124,18 +125,20 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	DriverManager drvManager;
 
 	printfKeyboardEventHandler kbhandler;
-
 	KeyboardDriver keyboard(&interrupts, &kbhandler);
 	drvManager.AddDriver(&keyboard);
 
 	MouseToConsole mousehandler;
-	MouseDriver mouse(&interrupts,&mousehandler);
+	MouseDriver mouse(&interrupts, &mousehandler);
 	drvManager.AddDriver(&mouse);
+
+	PeripheralComponentInterconectController PCIController;
+	PCIController.SelectDrivers(&drvManager, &interrupts);
+
 	printf("Initializing Hardwae, Stage 2\n");
-
 	drvManager.ActivateAll();
-	printf("Initializing Hardwae, Stage 3\n");
 
+	printf("Initializing Hardwae, Stage 3\n");
 	interrupts.Activate();
 	while (1)
 		;
