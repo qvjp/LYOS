@@ -2,6 +2,7 @@
 #define __LYOS__HARDWARECOMMUNICATION__INTERRUPTS_H
 
 #include <gdt.h>
+#include <multitasking.h>
 #include <common/types.h>
 #include <hardwarecommunication/port.h>
 
@@ -32,6 +33,7 @@ class InterruptManager
   protected:
     static InterruptManager *ActiveInterruptManager;
     InterruptHandler *handlers[256];
+    TaskManager *taskManager;
 
     struct GateDescriptor
     {
@@ -64,7 +66,7 @@ class InterruptManager
     Port8BitSlow picSlaveData;
 
   public:
-    InterruptManager(lyos::GlobalDescriptorTable *gdt);
+    InterruptManager(lyos::GlobalDescriptorTable *gdt, lyos::TaskManager* taskManager);
     ~InterruptManager();
 
     void Activate();

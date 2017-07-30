@@ -1,4 +1,6 @@
 #include <hardwarecommunication/interrupts.h>
+
+using namespace lyos;
 using namespace lyos::common;
 using namespace lyos::hardwarecommunication;
 
@@ -43,12 +45,13 @@ void InterruptManager::SetInterruptDescriptorTableEntry(
     interruptDescriptorTable[interruptNumber].access = IDT_DESC_PRESENT | DescriptorType | ((DescriptorPrivilegeLevel & 3) << 5);
     interruptDescriptorTable[interruptNumber].reserved = 0;
 }
-InterruptManager::InterruptManager(GlobalDescriptorTable *gdt)
+InterruptManager::InterruptManager(GlobalDescriptorTable *gdt,TaskManager *taskManager)
     : picMasterCommand(0x20),
       picMasterData(0x21),
       picSlaveCommand(0xA0),
       picSlaveData(0xA1)
 {
+    this->taskManager = taskManager;
     uint16_t CodeSegment = gdt->CodeSegmentSelector();
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
 
@@ -124,8 +127,12 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
     }
     else if (interruptNumber != 0x20)
     {
-        printf("UNHANNDLE INTERRUPT 0x00");
+        printf("UNHANNDLE INTERRUPT 0x");
         printfHex(interruptNumber);
+    }
+    if(interruptNumber == 0x20)
+    {
+        esp = (uint32_t)taskManager->Schedule((CPUState*)esp);
     }
 
     if (0x20 <= interruptNumber && interruptNumber < 0x30)
