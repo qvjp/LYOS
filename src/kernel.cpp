@@ -7,11 +7,14 @@
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
 #include <drivers/vga.h>
+#include <gui/desktop.h>
+#include <gui/window.h>
 
 using namespace lyos;
 using namespace lyos::common;
 using namespace lyos::drivers;
 using namespace lyos::hardwarecommunication;
+using namespace lyos::gui;
 
 void printf(char *str)
 {
@@ -123,14 +126,18 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 
 	printf("Initializing Hardwae, Stage 1\n");
 
+	Desktop desktop(320, 200, 0x00, 0xA8, 0x00);
+
 	DriverManager drvManager;
 
-	printfKeyboardEventHandler kbhandler;
-	KeyboardDriver keyboard(&interrupts, &kbhandler);
+	// printfKeyboardEventHandler kbhandler;
+	// KeyboardDriver keyboard(&interrupts, &kbhandler);
+	KeyboardDriver keyboard(&interrupts, &desktop);
 	drvManager.AddDriver(&keyboard);
 
-	MouseToConsole mousehandler;
-	MouseDriver mouse(&interrupts, &mousehandler);
+	// MouseToConsole mousehandler;
+	// MouseDriver mouse(&interrupts, &mousehandler);
+	MouseDriver mouse(&interrupts, &desktop);
 	drvManager.AddDriver(&mouse);
 
 	PeripheralComponentInterconectController PCIController;
@@ -142,15 +149,19 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	drvManager.ActivateAll();
 
 	printf("Initializing Hardwae, Stage 3\n");
-	interrupts.Activate();
 
 	vga.SetMode(320, 200, 8);
-	for (uint32_t y = 0; y < 200; y++)
-		for (uint32_t x = 0; x < 320; x++)
-		{
-			vga.PutPixel(x, y, 0x00, 0x00, 0xA8);
-		}
+
+	Window win1(&desktop,10,10,20,20,0xA8,0x00,0x00);
+	desktop.AddChild(&win1);
+	Window win2(&desktop,150,150,30,40,0x00,0x00,0xA8);
+	desktop.AddChild(&win2);
+	
+	interrupts.Activate();
+
 
 	while (1)
-		;
+	{
+		desktop.Draw(&vga);
+	}
 }

@@ -4,16 +4,16 @@ using namespace lyos::common;
 using namespace lyos::drivers;
 
 VideoGraphicsArray::VideoGraphicsArray() : miscPort(0x3c3),
-crtcIndexPort(0x3d4),
-crtcDataPort(0x3d5),
-sequencerIndexPort(0x3c4),
-sequencerDataPort(0x3c5),
-graphicsControllerIndexPort(0x3ce),
-graphicsControllerDataPort(0x3cf),
-attributeControllerIndexPort(0x3c0),
-attributeControllerReadPort(0x3c1),
-attributeControllerWritePort(0x3c0),
-attributeControllerResetPost(0x3da)
+                                           crtcIndexPort(0x3d4),
+                                           crtcDataPort(0x3d5),
+                                           sequencerIndexPort(0x3c4),
+                                           sequencerDataPort(0x3c5),
+                                           graphicsControllerIndexPort(0x3ce),
+                                           graphicsControllerDataPort(0x3cf),
+                                           attributeControllerIndexPort(0x3c0),
+                                           attributeControllerReadPort(0x3c1),
+                                           attributeControllerWritePort(0x3c0),
+                                           attributeControllerResetPost(0x3da)
 {
 }
 VideoGraphicsArray::~VideoGraphicsArray()
@@ -109,17 +109,36 @@ uint8_t *VideoGraphicsArray::GetFrameBufferSegment()
     }
 }
 
-void VideoGraphicsArray::PutPixel(uint32_t x, uint32_t y, uint8_t colorIndex)
+void VideoGraphicsArray::PutPixel(int32_t x, int32_t y, uint8_t colorIndex)
 {
+    if(x < 0 || 320 <= x || y < 0 || 200 <= y)
+    {
+        return;
+    }
     uint8_t *pixelAddress = GetFrameBufferSegment() + 320 * y + x;
     *pixelAddress = colorIndex;
 }
 uint8_t VideoGraphicsArray::GetColorIndex(uint8_t r, uint8_t g, uint8_t b)
 {
-    if (r == 0x00, g == 0x00, b == 0xA8)
-        return 0x01;
+    if (r == 0x00 && g == 0x00 && b == 0x00) return 0x00; // black
+    if (r == 0x00 && g == 0x00 && b == 0xA8) return 0x01; //blue
+    if (r == 0x00 && g == 0xA8 && b == 0x00) return 0x02; //green
+    if (r == 0xA8 && g == 0x00 && b == 0x00) return 0x04; //red
+    if (r == 0xFF && g == 0xFF && b == 0xFF) return 0x3F; //white
+    return 0x00;
 }
-void VideoGraphicsArray::PutPixel(uint32_t x, uint32_t y, uint8_t r, uint8_t g, uint8_t b)
+void VideoGraphicsArray::PutPixel(int32_t x, int32_t y, uint8_t r, uint8_t g, uint8_t b)
 {
     PutPixel(x, y, GetColorIndex(r, g, b));
+}
+
+void VideoGraphicsArray::FillRectangle(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint8_t r, uint8_t g, uint8_t b)
+{
+    for (int32_t Y = y; Y < y + h; Y++)
+    {
+        for (int32_t X = x; X < x + w; X++)
+        {
+            PutPixel(X, Y, r, g, b);
+        }
+    }
 }
