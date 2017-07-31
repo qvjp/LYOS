@@ -8,8 +8,14 @@ objects = obj/loader.o \
 	obj/hardwarecommunication/port.o \
 	obj/hardwarecommunication/interruptstubs.o \
 	obj/hardwarecommunication/interrupts.o \
+	obj/multitasking.o \
+	obj/hardwarecommunication/pci.o \
 	obj/drivers/keyboard.o \
 	obj/drivers/mouse.o \
+	obj/drivers/vga.o \
+	obj/gui/widget.o \
+	obj/gui/window.o \
+	obj/gui/desktop.o \
 	obj/kernel.o
 
 obj/%.o: src/%.cpp
@@ -32,7 +38,7 @@ mykernel.iso: mykernel.bin
 	echo 'set timeout=0' 					  > iso/boot/grub/grub.cfg
 	echo 'set default=0' 					 >> iso/boot/grub/grub.cfg
 	echo '' 								 >> iso/boot/grub/grub.cfg
-	echo 'menuentry "My Operating System" {' >> iso/boot/grub/grub.cfg
+	echo 'menuentry "LYOS" {' >> iso/boot/grub/grub.cfg
 	echo '	multiboot /boot/mykernel.bin' 	 >> iso/boot/grub/grub.cfg
 	echo '  boot' 							 >> iso/boot/grub/grub.cfg
 	echo '}' 								 >> iso/boot/grub/grub.cfg
@@ -41,7 +47,7 @@ mykernel.iso: mykernel.bin
 
 run: mykernel.iso
 	(killall VirtualBox && sleep 1) || true
-	VirtualBox --startvm "My Operating System" &
+	VirtualBox --startvm "LYOS" &
 
 install: mykernel.bin
 	sudo cp $< /boot/mykernel.bin
