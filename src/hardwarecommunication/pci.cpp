@@ -94,12 +94,16 @@ void PeripheralComponentInterconectController::SelectDrivers(DriverManager *driv
 
 Driver *PeripheralComponentInterconectController::GetDriver(PeripheralComponentInterconectDeviceDescriptor dev, InterruptManager *interrupts)
 {
+    Driver *driver = 0;
     switch (dev.vendor_id)
     {
     case 0x1022:
         switch (dev.device_id)
         {
         case 0x2000:
+            // driver = (amd_am79c973 *)MemoryManager::activeMemoryManager->malloc(sizeof(amd_am79c973));
+            // if (driver != 0)
+            //     new (driver) amd_am79c973(..);
             printf("AMD am79c973");
             break;
         }
@@ -115,7 +119,7 @@ Driver *PeripheralComponentInterconectController::GetDriver(PeripheralComponentI
             break;
         }
     }
-    return 0;
+    return driver;
 }
 
 BaseAddressRegister PeripheralComponentInterconectController::GetBaseAddressRegister(uint16_t bus, uint16_t device, uint16_t function, uint16_t bar)
