@@ -1,4 +1,6 @@
 #include <hardwarecommunication/pci.h>
+#include <drivers/amd_am79c973.h>
+
 using namespace lyos::common;
 using namespace lyos::hardwarecommunication;
 using namespace lyos::drivers;
@@ -63,11 +65,12 @@ void PeripheralComponentInterconectController::SelectDrivers(DriverManager *driv
                     {
                         dev.portBase = (uint32_t)bar.address;
                     }
-                    Driver *driver = GetDriver(dev, interrupts);
-                    if (driver != 0)
-                    {
-                        driverManager->AddDriver(driver);
-                    }
+                }
+
+                Driver *driver = GetDriver(dev, interrupts);
+                if (driver != 0)
+                {
+                    driverManager->AddDriver(driver);
                 }
 
                 printf("PCI BUS ");
@@ -97,14 +100,15 @@ Driver *PeripheralComponentInterconectController::GetDriver(PeripheralComponentI
     Driver *driver = 0;
     switch (dev.vendor_id)
     {
-    case 0x1022:
+    case 0x1022: //AMD
         switch (dev.device_id)
         {
-        case 0x2000:
-            // driver = (amd_am79c973 *)MemoryManager::activeMemoryManager->malloc(sizeof(amd_am79c973));
-            // if (driver != 0)
-            //     new (driver) amd_am79c973(..);
+        case 0x2000: //am79c973
+            driver = (amd_am79c973 *)MemoryManager::activeMemoryManager->malloc(sizeof(amd_am79c973));
+            if (driver != 0)
+                new (driver) amd_am79c973(&dev, interrupts);
             printf("AMD am79c973");
+            return driver;
             break;
         }
         break;
@@ -145,7 +149,7 @@ BaseAddressRegister PeripheralComponentInterconectController::GetBaseAddressRegi
         case 2:
             break;
         }
-        result.prefetchable = ((bar_value >> 3) & 0x1) == 0x1;
+      //  result.prefetchable = ((bar_value >> 3) & 0x1) == 0x1;
     }
     else
     {

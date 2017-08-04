@@ -21,7 +21,7 @@ void MouseEventHandler::OnMouseMove(int x, int y)
 }
 
 MouseDriver::MouseDriver(InterruptManager *manager, MouseEventHandler *handler)
-    : InterruptHandler(0x2C, manager),
+    : InterruptHandler(manager,0x2C),
       dataport(0x60),
       commandport(0x64)
 {
@@ -38,6 +38,11 @@ void MouseDriver::Activate()
 {
     offset = 0;
     buttons = 0;
+
+    if(handler != 0)
+    {
+        handler->OnActivate();
+    }
 
     commandport.Write(0xA8);
     commandport.Write(0x20);

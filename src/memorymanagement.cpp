@@ -88,16 +88,16 @@ void MemoryManager::free(void *ptr)
         }
     }
 }
-/*
+
 void *operator new(unsigned size)
 {
-    if (lyos::MemoryManager::activememoryManager == 0)
+    if (lyos::MemoryManager::activeMemoryManager == 0)
         return 0;
     return lyos::MemoryManager::activeMemoryManager->malloc(size);
 }
 void *operator new[](unsigned size)
 {
-    if (lyos::MemoryManager::activememoryManager == 0)
+    if (lyos::MemoryManager::activeMemoryManager == 0)
         return 0;
     return lyos::MemoryManager::activeMemoryManager->malloc(size);
 }
@@ -113,11 +113,11 @@ void *operator new[](unsigned size,void* ptr)
 
 void operator delete(void *ptr)
 {
-    if (lyos::MemoryManager::activememoryManager != 0)
+    if (lyos::MemoryManager::activeMemoryManager != 0)
         return lyos::MemoryManager::activeMemoryManager->free(ptr);
 }
 void operator delete[](void *ptr)
 {
-    if (lyos::MemoryManager::activememoryManager != 0)
+    if (lyos::MemoryManager::activeMemoryManager != 0)
         return lyos::MemoryManager::activeMemoryManager->free(ptr);
-}*/
+}

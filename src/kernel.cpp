@@ -167,7 +167,7 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	taskManager.AddTask(&task1);
 	taskManager.AddTask(&task2);
 	*/
-	InterruptManager interrupts(&gdt, &taskManager);
+	InterruptManager interrupts(0x20,&gdt, &taskManager);
 
 	printf("Initializing Hardwae, Stage 1\n");
 #ifdef GRAPHICSMODE
