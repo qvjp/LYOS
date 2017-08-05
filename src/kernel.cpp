@@ -8,6 +8,7 @@
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
 #include <drivers/vga.h>
+#include <drivers/ata.h>
 #include <gui/desktop.h>
 #include <gui/window.h>
 #include <multitasking.h>
@@ -210,8 +211,29 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	desktop.AddChild(&win2);
 #endif
 
+	// interrupt 14
+	AdvancedTechnologyAttachment ata0m(0x1F0, true);
+	printf("ATA Primary Master: ");
+	ata0m.Identify();
+
+	AdvancedTechnologyAttachment ata0s(0x1F0, false);
+	printf("ATA Primary Slave: ");
+	ata0s.Identify();
+
+	char *atabuffer = "http://www.qvjunping.me";
+	ata0s.Write28(0, (uint8_t *)atabuffer, 23);
+	ata0s.Flush();
+
+	ata0s.Read28(0, (uint8_t *)atabuffer, 23);
+
+	// interrupt 15
+	AdvancedTechnologyAttachment atalm(0x170, true);
+	AdvancedTechnologyAttachment atals(0x170, false);
+
+	/*
 	amd_am79c973 *eth0 = (amd_am79c973 *)(drvManager.drivers[2]);
-	eth0->Send((uint8_t *)"HELLO NETWORK", 13);
+	eth0->Send((uint8_t *)"HELLO NETWORK", 13); 
+	*/
 	interrupts.Activate();
 
 	while (1)
