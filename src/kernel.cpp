@@ -12,6 +12,7 @@
 #include <gui/window.h>
 #include <multitasking.h>
 
+#include <drivers/amd_am79c973.h>
 // #define GRAPHICSMODE
 
 using namespace lyos;
@@ -142,7 +143,7 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 
 	GlobalDescriptorTable gdt;
 
-	uint32_t *memupper = (uint32_t*)(((size_t)multiboot_structure) + 8);
+	uint32_t *memupper = (uint32_t *)(((size_t)multiboot_structure) + 8);
 	size_t heap = 10 * 1024 * 1024;
 	MemoryManager memoryManager(heap, (*memupper) * 1024 - heap - 10 * 1024);
 
@@ -167,7 +168,7 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	taskManager.AddTask(&task1);
 	taskManager.AddTask(&task2);
 	*/
-	InterruptManager interrupts(0x20,&gdt, &taskManager);
+	InterruptManager interrupts(0x20, &gdt, &taskManager);
 
 	printf("Initializing Hardwae, Stage 1\n");
 #ifdef GRAPHICSMODE
@@ -208,6 +209,9 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	Window win2(&desktop, 150, 150, 30, 40, 0x00, 0x00, 0xA8);
 	desktop.AddChild(&win2);
 #endif
+
+	amd_am79c973 *eth0 = (amd_am79c973 *)(drvManager.drivers[2]);
+	eth0->Send((uint8_t *)"HELLO NETWORK", 13);
 	interrupts.Activate();
 
 	while (1)

@@ -18,7 +18,7 @@ public:
 
 class DriverManager
 {
-private:
+public:
   Driver *drivers[265];
   int numDrivers;
 

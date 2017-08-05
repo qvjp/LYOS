@@ -64,6 +64,9 @@ class amd_am79c973 : public Driver, public hardwarecommunication::InterruptHandl
     void Activate();
     int Reset();
     common::uint32_t HandleInterrupt(common::uint32_t esp);
+
+    void Send(common::uint8_t* buffer, int count);
+    void Receive();
 };
 }
 }
