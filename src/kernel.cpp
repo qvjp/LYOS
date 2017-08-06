@@ -15,6 +15,7 @@
 #include <multitasking.h>
 
 #include <drivers/amd_am79c973.h>
+#include <net/etherframe.h>
 // #define GRAPHICSMODE
 
 using namespace lyos;
@@ -22,6 +23,7 @@ using namespace lyos::common;
 using namespace lyos::drivers;
 using namespace lyos::hardwarecommunication;
 using namespace lyos::gui;
+using namespace lyos::net;
 
 void printf(char *str)
 {
@@ -170,12 +172,12 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	printf("\n");
 
 	TaskManager taskManager;
-
+/*
 	Task task1(&gdt, taskA);
 	Task task2(&gdt, taskB);
 	taskManager.AddTask(&task1);
 	taskManager.AddTask(&task2);
-
+*/
 	InterruptManager interrupts(0x20, &gdt, &taskManager);
 	SyscallHandler syscalls(&interrupts, 0x80);
 
@@ -238,10 +240,13 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	AdvancedTechnologyAttachment atalm(0x170, true);
 	AdvancedTechnologyAttachment atals(0x170, false);
 
-	/*
+
 	amd_am79c973 *eth0 = (amd_am79c973 *)(drvManager.drivers[2]);
-	eth0->Send((uint8_t *)"HELLO NETWORK", 13); 
-	*/
+
+	EtherFrameProvider etherframe(eth0);
+	etherframe.Send(0xFFFFFFFFFFFF,0x0608,(uint8_t*)"F00",3);
+	// eth0->Send((uint8_t *)"HELLO NETWORK", 13); 
+
 	interrupts.Activate();
 
 	while (1)

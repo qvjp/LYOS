@@ -1,0 +1,86 @@
+Available debugfs requests:
+
+show_debugfs_params, params
+                         Show debugfs parameters
+open_filesys, open       Open a filesystem
+close_filesys, close     Close the filesystem
+freefrag, e2freefrag     Report free space fragmentation
+feature, features        Set/print superblock features
+dirty_filesys, dirty     Mark the filesystem as dirty
+init_filesys             Initialize a filesystem (DESTROYS DATA)
+show_super_stats, stats  Show superblock statistics
+ncheck                   Do inode->name translation
+icheck                   Do block->inode translation
+change_root_directory, chroot
+                         Change root directory
+change_working_directory, cd
+                         Change working directory
+list_directory, ls       List directory
+show_inode_info, stat    Show inode information 
+dump_extents, extents, ex
+                         Dump extents information 
+blocks                   Dump blocks used by an inode 
+filefrag                 Report fragmentation information for an inode
+link, ln                 Create directory link
+unlink                   Delete a directory link
+mkdir                    Create a directory
+rmdir                    Remove a directory
+rm                       Remove a file (unlink and kill_file, if appropriate)
+kill_file                Deallocate an inode and its blocks
+copy_inode               Copy the inode structure
+clri                     Clear an inode's contents
+freei                    Clear an inode's in-use flag
+seti                     Set an inode's in-use flag
+testi                    Test an inode's in-use flag
+freeb                    Clear a block's in-use flag
+setb                     Set a block's in-use flag
+testb                    Test a block's in-use flag
+modify_inode, mi         Modify an inode by structure
+find_free_block, ffb     Find free block(s)
+find_free_inode, ffi     Find free inode(s)
+print_working_directory, pwd
+                         Print current working directory
+expand_dir, expand       Expand directory
+mknod                    Create a special file
+list_deleted_inodes, lsdel
+                         List deleted inodes
+undelete, undel          Undelete file
+write                    Copy a file from your native filesystem
+dump_inode, dump         Dump an inode out to a file
+cat                      Dump an inode out to stdout
+lcd                      Change the current directory on your native filesystem
+rdump                    Recursively dump a directory to the native filesystem
+set_super_value, ssv     Set superblock value
+set_inode_field, sif     Set inode field
+set_block_group, set_bg  Set block group descriptor field
+logdump                  Dump the contents of the journal
+htree_dump, htree        Dump a hash-indexed directory
+dx_hash, hash            Calculate the directory hash of a filename
+dirsearch                Search a directory for a particular filename
+bmap                     Calculate the logical->physical block mapping for an inode
+fallocate                Allocate uninitialized blocks to an inode
+punch, truncate          Punch (or truncate) blocks from an inode by deallocating them
+symlink                  Create a symbolic link
+imap                     Calculate the location of an inode
+dump_unused              Dump unused blocks
+set_current_time         Set current time to use when setting filesystem fields
+supported_features       Print features supported by this version of e2fsprogs
+dump_mmp                 Dump MMP information
+set_mmp_value, smmp      Set MMP value
+extent_open, eo          Open inode for extent manipulation
+zap_block, zap           Zap block: fill with 0, pattern, flip bits etc.
+block_dump, bdump, bd    Dump contents of a block
+ea_list                  List extended attributes of an inode
+ea_get                   Get an extended attribute of an inode
+ea_set                   Set an extended attribute of an inode
+ea_rm                    Remove an extended attribute of an inode
+list_quota, lq           List quota
+get_quota, gq            Get quota
+inode_dump, idump, id    Dump the inode structure in hex
+journal_open, jo         Open the journal
+journal_close, jc        Close the journal
+journal_write, jw        Write a transaction to the journal
+journal_run, jr          Recover the journal
+help                     Display info on command or topic.
+list_requests, lr, ?     List available commands.
+quit, q                  Leave the subsystem.
