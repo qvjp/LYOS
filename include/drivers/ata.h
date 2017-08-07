@@ -12,24 +12,24 @@ class AdvancedTechnologyAttachment
 {
   protected:
     hardwarecommunication::Port16Bit dataPort;
-    hardwarecommunication::Port16Bit errorPort;
-    hardwarecommunication::Port16Bit sectorCountPort;
-    hardwarecommunication::Port16Bit lbaLowPort;
-    hardwarecommunication::Port16Bit lbaMidPort;
-    hardwarecommunication::Port16Bit lbaHiPort;
-    hardwarecommunication::Port16Bit devicePort;
-    hardwarecommunication::Port16Bit commandPort;
-    hardwarecommunication::Port16Bit controlPort;
+    hardwarecommunication::Port8Bit errorPort;
+    hardwarecommunication::Port8Bit sectorCountPort;
+    hardwarecommunication::Port8Bit lbaLowPort;
+    hardwarecommunication::Port8Bit lbaMidPort;
+    hardwarecommunication::Port8Bit lbaHiPort;
+    hardwarecommunication::Port8Bit devicePort;
+    hardwarecommunication::Port8Bit commandPort;
+    hardwarecommunication::Port8Bit controlPort;
     bool master;
-    common::uint16_t bytesPerSector;
+    // common::uint16_t bytesPerSector;
 
   public:
-    AdvancedTechnologyAttachment(common::uint16_t protBase, bool master);
+    AdvancedTechnologyAttachment(bool master,common::uint16_t protBase);
     ~AdvancedTechnologyAttachment();
 
     void Identify();
-    void Read28(common::uint32_t sector, common::uint8_t *data, int count);
-    void Write28(common::uint32_t sector, common::uint8_t *data, int count);
+    void Read28(common::uint32_t sectorNum, int count = 512);
+    void Write28(common::uint32_t sectorNum, common::uint8_t *data, int count);
     void Flush();
 };
 }

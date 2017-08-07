@@ -4,7 +4,6 @@
 .section .text
 
 .extern _ZN4lyos21hardwarecommunication16InterruptManager15HandleInterruptEhj
-# .global _ZN4lyos21hardwarecommunication16InterruptManager22IgnoreInterruptRequestEv
 
 
 .macro HandleException num
@@ -85,7 +84,7 @@ int_bottom:
     push (interruptnumber)
     call _ZN4lyos21hardwarecommunication16InterruptManager15HandleInterruptEhj
     # addl %5, %esp
-    movl %eax, %esp
+    mov %eax, %esp
 
     popl %eax
     popl %ebx

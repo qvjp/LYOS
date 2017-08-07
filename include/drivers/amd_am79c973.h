@@ -21,7 +21,7 @@ class RawDataHandler
   public:
     RawDataHandler(amd_am79c973 *backend);
     ~RawDataHandler();
-    virtual bool OnRawDataReceived(common::uint8_t *buffer, common::uint32_t size);
+    bool OnRawDataReceived(common::uint8_t *buffer, common::uint32_t size);
     void Send(common::uint8_t *buffer, common::uint32_t size);
 };
 class amd_am79c973 : public Driver, public hardwarecommunication::InterruptHandler
@@ -71,7 +71,8 @@ class amd_am79c973 : public Driver, public hardwarecommunication::InterruptHandl
     RawDataHandler *handler;
 
   public:
-    amd_am79c973(lyos::hardwarecommunication::PeripheralComponentInterconectDeviceDescriptor *dev, lyos::hardwarecommunication::InterruptManager *interrupts);
+    amd_am79c973(lyos::hardwarecommunication::PeripheralComponentInterconectDeviceDescriptor *dev,
+     lyos::hardwarecommunication::InterruptManager *interrupts);
     ~amd_am79c973();
 
     void Activate();
@@ -83,6 +84,8 @@ class amd_am79c973 : public Driver, public hardwarecommunication::InterruptHandl
 
     void SetHandler(RawDataHandler *handler);
     common::uint64_t GetMACAddress();
+    void SetIPAddress(common::uint32_t);
+    common::uint32_t GetIPAddress();
 };
 }
 }

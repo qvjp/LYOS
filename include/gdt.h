@@ -14,7 +14,7 @@ public:
     lyos::common::uint16_t base_lo;
     lyos::common::uint8_t base_hi;
     lyos::common::uint8_t type;
-    lyos::common::uint8_t flags_limit_hi;
+    lyos::common::uint8_t limit_hi;
     lyos::common::uint8_t base_vhi;
 
   public:
