@@ -31,7 +31,7 @@ protected:
 public:
   EtherFrameHandler(EtherFrameProvider *backend, common::uint16_t etherType);
   ~EtherFrameHandler();
-  bool OnEtherFrameReceived(common::uint8_t *etherframePayload, common::uint32_t size);
+  virtual bool OnEtherFrameReceived(common::uint8_t *etherframePayload, common::uint32_t size);
   void Send(common::uint64_t dstMAC_BD,common::uint8_t *etherframePayload, common::uint32_t size);
 };
 

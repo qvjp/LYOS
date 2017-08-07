@@ -21,7 +21,7 @@ class RawDataHandler
   public:
     RawDataHandler(amd_am79c973 *backend);
     ~RawDataHandler();
-    bool OnRawDataReceived(common::uint8_t *buffer, common::uint32_t size);
+    virtual bool OnRawDataReceived(common::uint8_t *buffer, common::uint32_t size);
     void Send(common::uint8_t *buffer, common::uint32_t size);
 };
 class amd_am79c973 : public Driver, public hardwarecommunication::InterruptHandler
