@@ -27,7 +27,7 @@ struct CPUState
 
     common::uint32_t eip;
     common::uint32_t cs;
-    common::uint32_t cflags;
+    common::uint32_t eflags;
     common::uint32_t esp;
     common::uint32_t ss;
 } __attribute__((packed));

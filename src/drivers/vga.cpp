@@ -3,7 +3,7 @@
 using namespace lyos::common;
 using namespace lyos::drivers;
 
-VideoGraphicsArray::VideoGraphicsArray() : miscPort(0x3c3),
+VideoGraphicsArray::VideoGraphicsArray() : miscPort(0x3c2),
                                            crtcIndexPort(0x3d4),
                                            crtcDataPort(0x3d5),
                                            sequencerIndexPort(0x3c4),
@@ -111,7 +111,7 @@ uint8_t *VideoGraphicsArray::GetFrameBufferSegment()
 
 void VideoGraphicsArray::PutPixel(int32_t x, int32_t y, uint8_t colorIndex)
 {
-    if(x < 0 || 320 <= x || y < 0 || 200 <= y)
+    if (x < 0 || 320 <= x || y < 0 || 200 <= y)
     {
         return;
     }
@@ -120,11 +120,16 @@ void VideoGraphicsArray::PutPixel(int32_t x, int32_t y, uint8_t colorIndex)
 }
 uint8_t VideoGraphicsArray::GetColorIndex(uint8_t r, uint8_t g, uint8_t b)
 {
-    if (r == 0x00 && g == 0x00 && b == 0x00) return 0x00; // black
-    if (r == 0x00 && g == 0x00 && b == 0xA8) return 0x01; //blue
-    if (r == 0x00 && g == 0xA8 && b == 0x00) return 0x02; //green
-    if (r == 0xA8 && g == 0x00 && b == 0x00) return 0x04; //red
-    if (r == 0xFF && g == 0xFF && b == 0xFF) return 0x3F; //white
+    if (r == 0x00 && g == 0x00 && b == 0x00)
+        return 0x00; // black
+    if (r == 0x00 && g == 0x00 && b == 0xA8)
+        return 0x01; //blue
+    if (r == 0x00 && g == 0xA8 && b == 0x00)
+        return 0x02; //green
+    if (r == 0xA8 && g == 0x00 && b == 0x00)
+        return 0x04; //red
+    if (r == 0xFF && g == 0xFF && b == 0xFF)
+        return 0x3F; //white
     return 0x00;
 }
 void VideoGraphicsArray::PutPixel(int32_t x, int32_t y, uint8_t r, uint8_t g, uint8_t b)
