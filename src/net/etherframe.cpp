@@ -26,6 +26,14 @@ void EtherFrameHandler::Send(uint64_t dstMAC_BE, uint8_t *data, uint32_t size)
     backend->Send(dstMAC_BE, etherType_BE, data, size);
 }
 
+
+uint32_t EtherFrameHandler::GetIPAddress()
+{
+    return backend->GetIPAddress();
+}
+
+
+
 EtherFrameProvider::EtherFrameProvider(amd_am79c973 *backend)
     : RawDataHandler(backend)
 {

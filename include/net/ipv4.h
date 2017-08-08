@@ -47,7 +47,7 @@ class InternetProtocolHandler
               common::uint32_t size);
 };
 
-class InternetProtocolProvider : EtherFrameHandler
+class InternetProtocolProvider : public EtherFrameHandler
 {
     friend class InternetProtocolHandler;
 

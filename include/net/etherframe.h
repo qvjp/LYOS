@@ -33,6 +33,7 @@ public:
   ~EtherFrameHandler();
   virtual bool OnEtherFrameReceived(common::uint8_t *etherframePayload, common::uint32_t size);
   void Send(common::uint64_t dstMAC_BD,common::uint8_t *etherframePayload, common::uint32_t size);
+  common::uint32_t GetIPAddress();
 };
 
 class EtherFrameProvider : public lyos::drivers::RawDataHandler

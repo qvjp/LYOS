@@ -27,5 +27,8 @@ _stop:
     jmp _stop
 
 .section .bss
-.space 2*1024*1024 ;# 2MiB
+.space 4*1024*1024 ;# 4MiB
 kernel_stack:
+
+.space 10*1024; # 10Kib padding
+heap:
