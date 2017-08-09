@@ -98,10 +98,10 @@ void AdvancedTechnologyAttachment::Read28(uint32_t sector, uint8_t *data, int co
     {
         uint16_t wdata = dataPort.Read();
 
-        char *foo = "  \0";
-        foo[1] = (wdata >> 8) & 0x00FF;
-        foo[0] = wdata & 0x00FF;
-        printf(foo);
+        // char *foo = "  \0";
+        // foo[1] = (wdata >> 8) & 0x00FF;
+        // foo[0] = wdata & 0x00FF;
+        // printf(foo);
 
         data[i] = wdata & 0x00FF;
         if (i + 1 < count)

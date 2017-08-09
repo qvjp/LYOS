@@ -1,4 +1,5 @@
 #include <fs/msdospart.h>
+#include <fs/fat.h>
 
 using namespace lyos;
 using namespace lyos::common;
@@ -29,6 +30,10 @@ void MSDOSPartitionTable::ReadPartitions(AdvancedTechnologyAttachment *hd)
 
     for (int i = 0; i < 4; i++)
     {
+        if (mbr.parimaryPartition[i].partition_id == 0x00)
+        {
+            continue;
+        }
         printf(" Partition ");
         printfHex(i & 0xFF);
         if (mbr.parimaryPartition[i].bootable == 0x80)
@@ -39,6 +44,9 @@ void MSDOSPartitionTable::ReadPartitions(AdvancedTechnologyAttachment *hd)
         {
             printf(" not blltable. Type");
         }
+
         printfHex(mbr.parimaryPartition[i].partition_id);
+
+        ReadBiosBlock(hd, mbr.parimaryPartition[i].start_lba);
     }
 }

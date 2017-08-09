@@ -222,6 +222,7 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	printf("ATA Primary Slave: ");
 	ata0s.Identify();
 
+	printf("\n\n\n\n");
 
 	MSDOSPartitionTable::ReadPartitions(&ata0s);
 
