@@ -10,6 +10,7 @@
 #include <drivers/mouse.h>
 #include <drivers/vga.h>
 #include <drivers/ata.h>
+#include <fs/msdospart.h>
 #include <gui/desktop.h>
 #include <gui/window.h>
 #include <multitasking.h>
@@ -25,6 +26,7 @@
 using namespace lyos;
 using namespace lyos::common;
 using namespace lyos::drivers;
+using namespace lyos::fs;
 using namespace lyos::hardwarecommunication;
 using namespace lyos::gui;
 using namespace lyos::net;
@@ -250,11 +252,15 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 	printf("ATA Primary Slave: ");
 	ata0s.Identify();
 
-	char *atabuffer = "http://www.qvjunping.me";
-	ata0s.Write28(0, (uint8_t *)atabuffer, 23);
-	ata0s.Flush();
+	printf("\n\n\n\n");
 
-	ata0s.Read28(0, (uint8_t *)atabuffer, 23);
+	MSDOSPartitionTable::ReadPartitions(&ata0s);
+
+	// char *atabuffer = "http://www.qvjunping.me";
+	// ata0s.Write28(0, (uint8_t *)atabuffer, 23);
+	// ata0s.Flush();
+
+	// ata0s.Read28(0, (uint8_t *)atabuffer, 23);
 
 	// interrupt 15
 	AdvancedTechnologyAttachment atalm(0x170, true);
