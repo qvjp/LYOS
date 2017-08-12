@@ -1,10 +1,11 @@
-GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings
+GPPPARAMS = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings
 #g++参数：32位模式
 ASPARAMS = --32
 #as参数：32位模式
 LDPARAMS = -melf_i386
 #ld参数：链接生成32位文件
 objects = obj/loader.o \
+		  obj/gdt.o \
 		  obj/kernel.o
 
 obj/%.o: src/%.cpp

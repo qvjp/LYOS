@@ -1,3 +1,7 @@
+#include<common/types.h>
+#include<gdt.h>
+using namespace lyos;
+using namespace lyos::common;
 
 void printf(char *str) //由于不能使用标准库，所以要自已写一个简易的printf()
 {
@@ -22,7 +26,7 @@ extern "C" void callConstructors()
 extern "C" void kernelMain(void *multiboot_structure, unsigned int magicnumber) //kernel的主函数，入口
 {	//extern "C"：按照类C的编译和连接规约来编译和连接，而不是C++的编译的连接规约。因为按C++的规约编译和连接会使loader.s中call kernelMain发生错误。
 	printf("Hello World!");
-
+	GlobalDescriptorTable gdt;
 	while(1);//让系统一直执行	
 }
 
