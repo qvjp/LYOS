@@ -6,6 +6,9 @@ LDPARAMS = -melf_i386
 #ld参数：链接生成32位文件
 objects = obj/loader.o \
 		  obj/gdt.o \
+		  obj/hardwarecommunication/port.o \
+		  obj/hardwarecommunication/interruptstubs.o \
+		  obj/hardwarecommunication/interrupts.o \
 		  obj/kernel.o
 
 obj/%.o: src/%.cpp
