@@ -2,6 +2,10 @@ GCCPARAMS = -Iinclude -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti 
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
+export AS=x86_64-elf-as
+export CC=x86_64-elf-g++
+export LD=x86_64-elf-ld
+
 objects = obj/loader.o \
 	obj/gdt.o \
 	obj/memorymanagement.o \
@@ -31,14 +35,14 @@ objects = obj/loader.o \
 
 obj/%.o: src/%.cpp
 	mkdir -p $(@D)
-	gcc $(GCCPARAMS) -o $@ -c $<
+	$(CC) $(GCCPARAMS) -o $@ -c $<
 
 obj/%.o: src/%.s
 	mkdir -p $(@D)
-	as $(ASPARAMS) -o $@ $<
+	$(AS) $(ASPARAMS) -o $@ $<
 
 mykernel.bin: linker.ld $(objects)
-	ld $(LDPARAMS) -T $< -o $@ $(objects)
+	$(LD) $(LDPARAMS) -T $< -o $@ $(objects)
 
 
 mykernel.iso: mykernel.bin
